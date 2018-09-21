@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Trie {
     private final Node root;
@@ -23,9 +24,16 @@ public class Trie {
         trie.addWord("start");
         trie.addWord("status");
         trie.addWord("stack");
+        trie.addWord("vyom");
 
-        System.out.println(trie.search("bear"));
-        System.out.println(trie.findAllWords("st"));
+
+        System.out.println("Searching for word start: "+trie.search("start"));
+        System.out.println("Searching for all the words which start with st: "+trie.findAllWords("st"));
+        System.out.println("Deleting the word hello: "+trie.deleteWord("hello"));
+        System.out.println("Searching vyom: " + trie.search("vyom"));
+        System.out.println("Deleating vyom: " + trie.deleteWord("vyom"));
+        System.out.println("Searching vyom after deleting it: " + trie.search("vyom"));
+        System.out.println("Searching for all the words which start with vy: "+trie.findAllWords("vy"));
     }
 
     public void addWord(String word) {
@@ -37,6 +45,7 @@ public class Trie {
             for (char ch : chars) {
                 if (currentNode.childrens.isEmpty()) {
                     Node newNode = new Node(ch);
+                    newNode.parent = currentNode;
                     currentNode.childrens.put(ch, newNode);
                     currentNode = newNode;
                 } else {
@@ -45,6 +54,7 @@ public class Trie {
                         currentNode = node;
                     } else {
                         Node newNode = new Node(ch);
+                        newNode.parent = currentNode;
                         currentNode.childrens.put(ch, newNode);
                         currentNode = newNode;
                     }
@@ -55,16 +65,26 @@ public class Trie {
     }
 
     public boolean search(String key) {
+        Node currentNode = null;
+        try {
+            currentNode = search0(key);
+        } catch (RuntimeException e) {
+            return false;
+        }
+        return currentNode.isCompleteWord;
+    }
+
+    public Node search0(String key) {
         Node currentNode = root;
         for (char ch : key.toCharArray()) {
             Node node = currentNode.childrens.get(ch);
             if (node != null) {
                 currentNode = node;
             } else {
-                return false;
+                throw new RuntimeException("key not present.");
             }
         }
-        return currentNode.isCompleteWord;
+        return currentNode;
 
     }
 
@@ -96,10 +116,37 @@ public class Trie {
         }
     }
 
+    public boolean deleteWord(String word) {
+
+        Node nodeToDelete = null;
+        try {
+            nodeToDelete = search0(word);
+        } catch (RuntimeException re) {
+            return false;
+        }
+        // we reached to the last character of word to be deleted
+        if (!nodeToDelete.isCompleteWord) // if it is not a word you can not delete it.
+            return false;
+        else {
+            if (!nodeToDelete.childrens.isEmpty()) // If node has childrens you can not delete , just make the isCompleteWord to false.
+                nodeToDelete.isCompleteWord = false;
+            else {
+                Node parent = nodeToDelete.parent;
+                while (parent.childrens.size() == 1) {
+                    parent.childrens.values().remove(nodeToDelete);
+                    nodeToDelete = parent;
+                    parent = parent.parent;
+                }
+            }
+            return true;
+        }
+    }
+
     static class Node {
-        private final HashMap<Character, Node> childrens;
-        boolean isCompleteWord;
+        private final Map<Character, Node> childrens;
         private final char ch;
+        boolean isCompleteWord;
+        private Node parent; // we need parent while deleting a word.
 
         public Node(char ch) {
             this.ch = ch;
