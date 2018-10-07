@@ -128,6 +128,53 @@ int height(struct BSTree* node){
         return (1 + max(height(node->left), height(node->right)));
 }
 
+void findDeepestNode0(struct BSTree* root, int currentLevel, int* deepestNode, int* maxLevel){
+	if(root == NULL)
+		return;
+	else{
+		if(currentLevel > *maxLevel){
+			*maxLevel=currentLevel;
+			*deepestNode=root->data;
+		}
+		findDeepestNode0(root->left, currentLevel+1, deepestNode, maxLevel);
+		findDeepestNode0(root->right, currentLevel+1, deepestNode, maxLevel);
+	}
+}
+
+/*
+ * This function will find the first(left most) deepest node of tree.
+ */
+int findDeepestNode(struct BSTree* root){
+	if(root == NULL)
+		return -1;
+	else{
+		int deepestNode=0;
+		int maxLevel=0;
+		findDeepestNode0(root, 0, &deepestNode, &maxLevel);
+		return deepestNode;
+	}
+}
+
+void printAllDeepestNodes0(struct BSTree* root, int level, int deepestLevel){
+	if(root == NULL)
+		return;
+	else{
+		if(level == deepestLevel)
+			printf("%d, ",root->data);
+		printAllDeepestNodes0(root->left,level+1, deepestLevel);
+		printAllDeepestNodes0(root->right,level+1, deepestLevel);
+	}
+}
+/*
+ * This function will print all deepest node of tree.
+ */
+void printAllDeepestNodes(struct BSTree* root){
+	if(root == NULL)
+		return;
+	else
+		printAllDeepestNodes0(root, 0, height(root));
+}
+
 /*
  * This function will delete the entire tree.
  */
@@ -534,23 +581,49 @@ struct BSTree* deleteAllLeafNodes(struct BSTree* root){
     return root;
 }
 
+/*struct BSTree* getDeepestNode(struct BSTree* root){
+	if(root == NULL)
+		return 0;
+	else
+}*/
+
+int countLeafNodes(struct BSTree* root){
+	if(root == NULL)
+		return 0;
+	else{
+		if(root->left == NULL && root->right == NULL)
+			return 1;
+		else
+			return countLeafNodes(root->left) + countLeafNodes(root->right);
+	}
+}
+
+int countNonLeafNodes(struct BSTree* root){
+	if(root == NULL)
+		return 0;
+	else{ 
+		if(root->left != NULL || root->right != NULL)
+			return 1+ countNonLeafNodes(root->left) + countNonLeafNodes(root->right);
+	}
+}
+
 void printParameter(struct BSTree* root,int lr){
     if(root == NULL)
 		return;
     else{
         if(lr == 0){
-	    printf("%d ",root->data);
-	    printParameter(root->left, -1);
-	    printParameter(root->right, 1);
-	}
-	if(lr == -1){
-	    printf("%d ",root->data);
-	    printParameter(root->left, -1);
-	}
-	if(lr == 1){
-	    printf("%d ",root->data);
-	    printParameter(root->right, 1);
-	}
+			printf("%d ",root->data);
+			printParameter(root->left, -1);
+			printParameter(root->right, 1);
+		}
+		if(lr == -1){
+			printf("%d ",root->data);
+			printParameter(root->left, -1);
+		}
+		if(lr == 1){
+			printf("%d ",root->data);
+			printParameter(root->right, 1);
+		}
     }
 }
 
@@ -589,16 +662,16 @@ int countUniValTree(struct BSTree* root){
     }
     else if(root->left != NULL){
         if(root->data == root->left->data)
-	    return 1 + leftCount;
-	else
-	    return leftCount;
+			return 1 + leftCount;
+		else
+			return leftCount;
     }
     else if(root->right != NULL){
         if(root->data == root->right->data)
-	    return 1 + rightCount;
-	else
-	    return rightCount;
+			return 1 + rightCount;
+		else
+			return rightCount;
     }
     else
-	return 1;
+		return 1;
 }

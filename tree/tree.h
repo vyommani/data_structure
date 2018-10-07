@@ -40,3 +40,7 @@ extern int isBalanced(Tree);
 extern void longestSeqPath(Tree);
 extern void printLeafNodes(Tree);
 extern Tree deleteAllLeafNodes(Tree);
+int countLeafNodes(Tree);
+int countNonLeafNodes(Tree);
+int findDeepestNode(Tree);
+void printAllDeepestNodes(Tree);
