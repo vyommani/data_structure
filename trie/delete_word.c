@@ -17,11 +17,18 @@ Trie createTrie(){
 
 int main(void){
     Trie trie = createTrie();
-    printf("\n Is buy  present=%s\n", search(trie,"buy") == 1?"yes":"no");
-    delete(trie,"buy");
-    printf("\n Is buy  present=%s\n", search(trie,"buy") == 1?"yes":"no");
-    printf("\n Is buyer  present=%s\n", search(trie,"buyer") == 1?"yes":"no");
-    delete(trie,"stop");
-    printf("\n Is stop  present=%s\n", search(trie,"stop") == 1?"yes":"no");
+    printf("\nSearching for word 'buy' :%s\n",             search(trie,"buy") == 1 ? "true" :"false");
+    printf("\nDeleting the word 'buy': %s",                delete(trie,"buy") == 1 ? "true" :"false");
+    printf("\nSearching 'buy' after deleting it: =%s\n",   search(trie,"buy") == 1 ? "true" : "false");
+
+    printf("\nSearching for word 'buyer' :%s\n",           search(trie,"buyer") == 1 ? "true" : "false");
+
+    printf("\nSearching for word 'stop' :%s\n",            search(trie,"stop") == 1 ? "true" :"false");
+    printf("\nDeleting the word 'stop': %s",               delete(trie,"stop") == 1 ? "true" :"false");
+    printf("\nSearching 'stop' after deleting it: =%s\n",  search(trie,"stop") == 1 ? "true" : "false");
+    
+    printf("\n Searching for word 'stock' :%s\n",          search(trie,"stock") == 1 ? "true" :"false");
+    printf("\n Searching for word 'stack' :%s\n",          search(trie,"stack") == 1 ? "true" :"false");
+            
     return 0;
 }

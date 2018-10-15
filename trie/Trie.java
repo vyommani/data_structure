@@ -110,7 +110,7 @@ public class Trie {
                 // if parent does not have any child delete parent as well.
                 nodeToDelete = parent;
                 parent = parent.parent;
-                while (parent.childrens.size() == 1) {
+                while (parent.childrens.isEmpty()) {
                     parent.childrens.values().remove(nodeToDelete);
                     nodeToDelete = parent;
                     parent = parent.parent;

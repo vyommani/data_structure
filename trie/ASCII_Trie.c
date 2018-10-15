@@ -61,6 +61,14 @@ void deleteNodeFromTrie(Trie nodeToDelete){
 	parent->childs[nodeToDelete->ch] = 0; // set null
 	free(node); // free the node
 }
+int delete0(Trie nodeToDelete){
+	Trie parent = nodeToDelete->parent;
+	deleteNodeFromTrie(nodeToDelete);
+	if(parent != NULL && parent-> isChilds == 0)
+		return delete0(parent);
+	else
+		return 1;
+}
 
 int delete(Trie root, char* key){
 	Trie nodeToDelete = search0(root,key,0);
@@ -72,17 +80,7 @@ int delete(Trie root, char* key){
 		nodeToDelete->isCompleteWord = 0;
 		return 1;
 	}
-	
-	Trie parent = nodeToDelete->parent;
-	deleteNodeFromTrie(nodeToDelete);
-	nodeToDelete = parent;
-	parent = parent->parent;
-	while( parent != NULL && parent-> isChilds == 1){
-		deleteNodeFromTrie(nodeToDelete);
-		nodeToDelete = parent;
-		parent = parent->parent;
-	}
-	return 1;
+	return delete0(nodeToDelete);	
 }
 
 char* appendChar(char* prefix, char ch){
