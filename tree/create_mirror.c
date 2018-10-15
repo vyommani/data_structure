@@ -11,17 +11,17 @@ Tree createTree(int tree[], int length){
 
 /*
  * This will create a following BST 
- *                        18
- *                       / \
- *                      /   \
- *                     /     \
- *                    16      24
- *                    /\      /\
- *                   /  \    /   \
- *                  14  17  22   26
- *                  /\      /\    /\
- *                 /  \    /  \  /  \
- *                12  15   20  23 25 28
+ *                        18               |           18
+ *                       / \               |           /\
+ *                      /   \              |          /  \
+ *                     /     \             |         /    \
+ *                    16      24           |        24     16
+ *                    /\      /\           |        / \    / \
+ *                   /  \    /   \         |       /   \  /   \
+ *                  14  17  22   26        |      26   22 17   14
+ *                  /\      /\    /\       |      /\   /\       /\
+ *                 /  \    /  \  /  \      |     /  \ /  \     /  \
+ *                12  15   20  23 25 28    |    28  25 23 20  15  12
 */
 
 int main(void){
@@ -30,7 +30,8 @@ int main(void){
     printf("\nOriginal tree:");
     inorder(tree);
     Tree mirror_tree = createMirror(tree);
-    printf("\nMirror   tree:");
+    printf("\nExpected  Mirror   tree:28 26 25 24 23 22 20 18 17 16 15 14 12");
+    printf("\nGenerated Mirror   tree:");
     inorder(mirror_tree);
     return 0;
 }

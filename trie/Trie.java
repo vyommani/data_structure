@@ -10,35 +10,9 @@ public class Trie {
         root = new Node(' ');
     }
 
-    public static void main(String[] args) {
-        Trie trie = new Trie();
-        trie.addWord("bear");
-        trie.addWord("bell");
-        trie.addWord("bid");
-        trie.addWord("bull");
-        trie.addWord("buy");
-        trie.addWord("book");
-        trie.addWord("sell");
-        trie.addWord("stock");
-        trie.addWord("stop");
-        trie.addWord("start");
-        trie.addWord("status");
-        trie.addWord("stack");
-        trie.addWord("vyom");
-
-
-        System.out.println("Searching for word start: "+trie.search("start"));
-        System.out.println("Searching for all the words which start with st: "+trie.findAllWords("st"));
-        System.out.println("Deleting the word hello: "+trie.deleteWord("hello"));
-        System.out.println("Searching vyom: " + trie.search("vyom"));
-        System.out.println("Deleating vyom: " + trie.deleteWord("vyom"));
-        System.out.println("Searching vyom after deleting it: " + trie.search("vyom"));
-        System.out.println("Searching for all the words which start with vy: "+trie.findAllWords("vy"));
-    }
-
     public void addWord(String word) {
         if (word == null || word.isEmpty()) {
-            throw new IllegalArgumentException("Word is n not a valid string");
+            throw new IllegalArgumentException("Word is not a valid string");
         } else {
             char[] chars = word.toCharArray();
             Node currentNode = root;
@@ -132,6 +106,10 @@ public class Trie {
                 nodeToDelete.isCompleteWord = false;
             else {
                 Node parent = nodeToDelete.parent;
+                parent.childrens.values().remove(nodeToDelete);
+                // if parent does not have any child delete parent as well.
+                nodeToDelete = parent;
+                parent = parent.parent;
                 while (parent.childrens.size() == 1) {
                     parent.childrens.values().remove(nodeToDelete);
                     nodeToDelete = parent;
