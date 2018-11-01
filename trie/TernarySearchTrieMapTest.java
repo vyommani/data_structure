@@ -1,5 +1,12 @@
+/*
+ * Here comes the text of your license
+ * Each line should be prefixed with  * 
+ */
 package com.ds.trie;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -77,8 +84,7 @@ public class TernarySearchTrieMapTest {
     @Test
     public void testGet() {
         System.out.println("get");
-        String key = "now";
-        int result = instance.get(key);
+        int result = instance.get("now");
         assertEquals(1, result);
         assertEquals(null, instance.get("not present"));
     }
@@ -110,6 +116,8 @@ public class TernarySearchTrieMapTest {
     public void testSize() {
         System.out.println("size");
         assertEquals(34, instance.size());
+        instance.put("testkey", 35);
+        assertEquals(35, instance.size());
     }
 
     /**
@@ -129,5 +137,24 @@ public class TernarySearchTrieMapTest {
     public void testContainsKey() {
         System.out.println("containsKey");
         assertEquals(true, instance.containsKey("jam"));
+    }
+
+    /**
+     * Test of remove method, of class TernarySearchTrieMap.
+     */
+    @Test
+    public void testRemove() {
+        System.out.println("remove");
+        instance.remove("now");
+        assertEquals(false, instance.contains("now"));
+        assertEquals(null, instance.remove("now1"));
+        int result = instance.remove("and");
+        assertEquals(34, result);
+        instance.put("and", 35);
+        instance.put("and", 36);
+        instance.put("and", 37);
+        assertEquals(33, instance.size());
+        result= instance.get("and");
+        assertEquals(37, result);
     }
 }
