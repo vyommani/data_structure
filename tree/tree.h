@@ -44,3 +44,5 @@ int countLeafNodes(Tree);
 int countNonLeafNodes(Tree);
 int findDeepestNode(Tree);
 void printAllDeepestNodes(Tree);
+int  inorderSuccessor(Tree, int);
+int inorderPredecessor(Tree, int);

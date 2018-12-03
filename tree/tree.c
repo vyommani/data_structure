@@ -165,6 +165,7 @@ void printAllDeepestNodes0(struct BSTree* root, int level, int deepestLevel){
 		printAllDeepestNodes0(root->right,level+1, deepestLevel);
 	}
 }
+
 /*
  * This function will print all deepest node of tree.
  */
@@ -674,4 +675,52 @@ int countUniValTree(struct BSTree* root){
     }
     else
 		return 1;
+}
+
+int  inorderSuccessor0(struct BSTree* root, int item, struct BSTree* parent){
+	if(root == NULL)
+		return -1;
+	else{
+		if(item < root->data){
+			 // we need to update parent only when we take left turn.
+			return inorderSuccessor0(root->left, item, root);
+		}
+		else if(item > root->data){
+			return inorderSuccessor0(root->right, item, parent);
+		}
+		else{
+			if(root->right != NULL)
+				return minValue(root->right);
+			else
+				return parent != NULL ? parent->data: -1;
+		}
+	}
+}
+
+int  inorderSuccessor(struct BSTree* root, int item){
+	return inorderSuccessor0(root, item, NULL);
+}
+
+int  inorderPredecessor0(struct BSTree* root, int item, struct BSTree* parent){
+	if(root == NULL)
+		return -1;
+	else{
+		if(item < root->data){
+			return inorderPredecessor0(root->left, item, parent);
+		}
+		else if(item > root->data){
+			// we need to update parent only when we take right turn.
+			return inorderPredecessor0(root->right, item, root);
+		}
+		else{
+			if(root->left != NULL)
+				return maxValue(root->left);
+			else
+				return parent != NULL ? parent->data: -1;
+		}
+	}
+}
+
+int inorderPredecessor(struct BSTree* root, int item){
+	return inorderPredecessor0(root, item, NULL);
 }
